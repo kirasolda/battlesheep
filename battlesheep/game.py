@@ -1,5 +1,6 @@
-import pygame
 from queue import Queue
+
+import pygame
 
 from battlesheep.client import make_request
 from battlesheep.config import ip_address
@@ -20,15 +21,22 @@ class BSGame:
     def launch(self) -> None:
         # pages = [self.nickname_page]
         widgets = self.nickname_page()
-        while True:
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
             self.screen.fill((0, 0, 0))
             # for page in pages:
 
             for widget in widgets:
                 content, rect = widget
-                pygame.draw.rect(self.screen, (0, 0, 255), rect)
+                # pygame.draw.rect(self.screen, (0, 0, 255), rect)
                 if content:
                     self.screen.blit(content, rect)
+                else:
+                    pygame.draw.rect(self.screen, (0, 0, 255), rect)
+
             pygame.display.flip()
 
     def nickname_page(self):
