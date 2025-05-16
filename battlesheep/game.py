@@ -1,23 +1,58 @@
 import pygame
+from queue import Queue
 
 from battlesheep.client import make_request
 from battlesheep.config import ip_address
 
 
+class BSGame:
+
+    def __init__(self, inbound_queue: Queue):
+        self.inbound_queue = inbound_queue
+
+        pygame.init()
+        self.screen = pygame.display.set_mode(
+            (800, 600)
+        )  # TODO: Think about resolution
+        pygame.display.set_caption("BattleSheepGame")
+        self.status = "nickname"
+
+    def launch(self) -> None:
+        # pages = [self.nickname_page]
+        widgets = self.nickname_page()
+        while True:
+            self.screen.fill((0, 0, 0))
+            # for page in pages:
+
+            for widget in widgets:
+                content, rect = widget
+                pygame.draw.rect(self.screen, (0, 0, 255), rect)
+                if content:
+                    self.screen.blit(content, rect)
+            pygame.display.flip()
+
+    def nickname_page(self):
+        font = pygame.font.Font(None, 36)
+        text = font.render("Enter nickname", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(200, 150))
+
+        text_pair = (text, text_rect)
+
+        input_box = pygame.Rect(100, 100, 200, 40)
+
+        input_pair = (None, input_box)
+
+        # pygame.draw.rect(self.screen, (0, 0, 255), input_box)
+
+        return [text_pair, input_pair]
+
+
 def run_pygame(message_queue):
     # Initialize pygame
-    pygame.init()
-
-    # Set up the display
-    screen = pygame.display.set_mode((400, 300))
-    pygame.display.set_caption("IP Address Display")
 
     # Set up the font
-    font = pygame.font.Font(None, 36)
 
     # Render the IP address text
-    text = font.render(f"IP: {ip_address}", True, (255, 255, 255))
-    text_rect = text.get_rect(center=(200, 150))
 
     # Add button "Send message"
     button_font = pygame.font.Font(None, 24)

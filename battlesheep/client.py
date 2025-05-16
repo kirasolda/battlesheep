@@ -2,7 +2,7 @@ import requests
 
 
 def make_request():
-    url = "http://192.168.100.29:8000/message"
+    url = "http://192.168.100.23:8000/message"
     payload = {"message": "Hello from the client!"}
     headers = {"Content-Type": "application/json"}
 

@@ -3,7 +3,7 @@ import threading
 
 from fastapi import FastAPI
 
-from battlesheep.game import run_pygame
+from battlesheep.game import BSGame
 
 message_queue = queue.Queue()
 
@@ -25,7 +25,8 @@ def message(payload: dict):
 
 
 def start_pygame():
-    run_pygame(message_queue)
+    game = BSGame(message_queue)
+    game.launch()
 
 
 pygame_thread = threading.Thread(target=start_pygame, daemon=True)
